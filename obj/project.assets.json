@@ -3649,19 +3649,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\casas\\.nuget\\packages\\": {}
+    "C:\\Users\\ca22i\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\casas\\OneDrive\\Documentos\\MeuCantinhoCriativo\\MeuCantinhoCriativo.csproj",
+      "projectUniqueName": "C:\\Users\\ca22i\\OneDrive\\Documentos\\MeuCantinhoCriativo\\MeuCantinhoCriativo.csproj",
       "projectName": "MeuCantinhoCriativo",
-      "projectPath": "C:\\Users\\casas\\OneDrive\\Documentos\\MeuCantinhoCriativo\\MeuCantinhoCriativo.csproj",
-      "packagesPath": "C:\\Users\\casas\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\casas\\OneDrive\\Documentos\\MeuCantinhoCriativo\\obj\\",
+      "projectPath": "C:\\Users\\ca22i\\OneDrive\\Documentos\\MeuCantinhoCriativo\\MeuCantinhoCriativo.csproj",
+      "packagesPath": "C:\\Users\\ca22i\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\ca22i\\OneDrive\\Documentos\\MeuCantinhoCriativo\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\casas\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\ca22i\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -3736,7 +3736,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.206/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.412/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
