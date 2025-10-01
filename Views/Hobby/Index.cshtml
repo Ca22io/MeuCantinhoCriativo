@@ -4,7 +4,7 @@
 
 @if (Model == null || !Model.Any())
 {
-    <p>Você ainda não adicionou nenhum hobby. <a class="btn btn-primary" href="/Hobby/Create">Adicione um agora!</a></p>
+    <p>Você ainda não adicionou nenhum hobby. <a class="btn btn-primary" asp-action="Cadastrar">Adicione um agora!</a></p>
 }
 else
 {
@@ -23,7 +23,7 @@ else
                     <td>@hobby.Nome</td>
                     <td>@hobby.descricao</td>
                     <td>
-                        <a href="/Hobby/Edit/@hobby.Id" class="btn btn-secondary">Editar</a>
+                        <a href="/Hobby/Edit/@hobby.Id" class="btn btn-warning">Editar</a>
                         @if (hobby.descricao != null)
                         {
                             <a href="/Hobby/Details/@hobby.Id" class="btn btn-info">Detalhes</a>
@@ -33,12 +33,11 @@ else
                             <span class="btn btn-secondary">Detalhes</span>
                         }
 
-                        <a href="/Hobby/Details/@hobby.Id" class="btn btn-info">Detalhes</a>
                         <a href="/Hobby/Delete/@hobby.Id" class="btn btn-danger">Excluir</a>
                     </td>
                 </tr>
             }
         </tbody>       
     </table>
-    <a href="/Hobby/Create" class="btn btn-primary">Adicionar Novo Hobby</a>
+    <a asp-action="Cadastrar" class="btn btn-primary">Adicionar Novo Hobby</a>
 }   

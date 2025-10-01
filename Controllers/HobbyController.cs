@@ -35,14 +35,14 @@ namespace MeuCantinhoCriativo.Controllers
 
         [HttpGet]
         [Authorize]
-        public IActionResult AdicionarHobby()
+        public IActionResult Cadastrar()
         {
             return View();
         }
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> AdicionarHobby(HobbyViewModel hobbyViewModel)
+        public async Task<IActionResult> Cadastrar(HobbyViewModel hobbyViewModel)
         {
             var ObterIdUsuario = _userManager.GetUserId(User);
 
