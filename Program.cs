@@ -27,11 +27,14 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.SlidingExpiration = true;
 });
 
-builder.Services.AddScoped<AccountService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IHobbyService, HobbyService>();
 
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+
+builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
 

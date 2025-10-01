@@ -8,11 +8,11 @@ namespace MeuCantinhoCriativo.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly AccountService _AccountService;
+        private readonly IAccountService _IAccountService;
 
-        public AccountController(AccountService accountService)
+        public AccountController(IAccountService iaccountService)
         {
-            _AccountService = accountService;
+            _IAccountService = iaccountService;
         }
         
         [HttpGet]
@@ -26,12 +26,13 @@ namespace MeuCantinhoCriativo.Controllers
         {
             if (ModelState.IsValid)
             {
-                var service = await _AccountService.Registrar(model);
+                var service = await _IAccountService.Registrar(model);
 
                 return service switch
                 {
                     Resultado.Sucesso => RedirectToAction("Login", "Account"),
-                    Resultado.Falha => RedirectToAction("Cadastrar", "Account")
+                    Resultado.Falha => RedirectToAction("Cadastrar", "Account"),
+                    Resultado.NaoEncontrado => RedirectToAction("Cadastrar", "Account")
                 };
             }
 
@@ -49,7 +50,7 @@ namespace MeuCantinhoCriativo.Controllers
         {
             if (ModelState.IsValid)
             {
-                var service = await _AccountService.Login(model);
+                var service = await _IAccountService.Login(model);
 
                 return service switch
                 {
@@ -64,7 +65,7 @@ namespace MeuCantinhoCriativo.Controllers
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
-            await _AccountService.Logout();
+            await _IAccountService.Logout();
             
             return RedirectToAction("Index", "Home");
         }
