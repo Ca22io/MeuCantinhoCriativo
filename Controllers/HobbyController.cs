@@ -1,3 +1,4 @@
+using MeuCantinhoCriativo.Enum;
 using MeuCantinhoCriativo.Services;
 using MeuCantinhoCriativo.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -33,62 +34,135 @@ namespace MeuCantinhoCriativo.Controllers
             return View(hobbies);
         }
 
-        [HttpGet]
+        [HttpGet("Hobby/Cadastrar/{HobbyId?}")]
         [Authorize]
-        public IActionResult Cadastrar()
+        public async Task<IActionResult> Cadastrar(int? hobbyId = null)
         {
-            return View();
+            if (hobbyId.HasValue)
+            {
+                var ObterIdUsuario = _userManager.GetUserId(User);
+
+                if (ObterIdUsuario == null)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
+                var hobby = await _hobbyService.ObterHobbyPorId(hobbyId.Value, ObterIdUsuario);
+
+                if (hobby == null)
+                {
+                    return NotFound();
+                }
+
+                return View(hobby);
+            }
+
+            return View(new HobbyViewModel());
         }
 
-        [HttpPost]
+        [HttpPost("Hobby/Cadastrar/{HobbyId?}")]
         [Authorize]
         public async Task<IActionResult> Cadastrar(HobbyViewModel hobbyViewModel)
         {
-            var ObterIdUsuario = _userManager.GetUserId(User);
-
-            if (ObterIdUsuario == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
-            hobbyViewModel.UserId = ObterIdUsuario;
-
             if (ModelState.IsValid)
             {
-                var AdicionarHobby = await _hobbyService.AdicionarHobby(hobbyViewModel);
+                var ObterIdUsuario = _userManager.GetUserId(User);
 
-                return AdicionarHobby switch
+                if (ObterIdUsuario == null)
                 {
-                    Enum.Resultado.Sucesso => RedirectToAction("Index"),
-                    Enum.Resultado.Falha => View(hobbyViewModel),
-                    Enum.Resultado.NaoEncontrado => NotFound(),
+                    return RedirectToAction("Login", "Account");
+                }
+
+                hobbyViewModel.UserId = ObterIdUsuario;
+
+                if (hobbyViewModel.Id.HasValue)
+                {
+                    var Hobby = await _hobbyService.AtualizarHobby(hobbyViewModel);
+
+                    return Hobby switch
+                    {
+                        Resultado.Sucesso => RedirectToAction("Index"),
+                        Resultado.Falha => View(hobbyViewModel),
+                        Resultado.NaoEncontrado => NotFound(),
+                    };
+                }
+                else
+                {
+
+
+                    var AdicionarHobby = await _hobbyService.AdicionarHobby(hobbyViewModel);
+
+                    return AdicionarHobby switch
+                    {
+                        Resultado.Sucesso => RedirectToAction("Index"),
+                        Resultado.Falha => View(hobbyViewModel),
+                        Resultado.NaoEncontrado => NotFound(),
+                    };
+
+
+                }
+
+            }
+
+            return View(hobbyViewModel);
+
+        }
+
+        [HttpGet("Hobby/Deletar/{HobbyId}")]
+        [Authorize]
+        public async Task<IActionResult> Deletar(int HobbyId)
+        {
+            if (HobbyId != 0)
+            {
+                var ObterIdUsuario = _userManager.GetUserId(User);
+
+                if (ObterIdUsuario == null)
+                {
+                    return RedirectToAction("Index");
+                }
+
+                var Hobby = await _hobbyService.ObterHobbyPorId(HobbyId, ObterIdUsuario);
+
+                return View(Hobby);
+
+            }
+
+            return View("Index");
+        }
+
+        [HttpPost("Hobby/Deletar/{id}")]
+        [Authorize]
+        public async Task<IActionResult> DeletarConfirmado(int id)
+        {
+            if (id > 0)
+            {
+                var ObterUsuario = _userManager.GetUserId(User);
+
+                if (ObterUsuario == null)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
+                var VerificarHobby = await _hobbyService.ObterHobbyPorId(id, ObterUsuario);
+
+                if (VerificarHobby == null)
+                {
+                    return NotFound();
+                }
+
+                var Remover = await _hobbyService.RemoverHobby(id, ObterUsuario);
+
+                return Remover switch
+                {
+                    Resultado.Sucesso => RedirectToAction("Index"),
+                    Resultado.Falha => View("Deletar", VerificarHobby),
+                    _ => RedirectToAction("Index")
                 };
             }
-            else
-            {
-                return View(hobbyViewModel);
-            }
+
+            return RedirectToAction("Index");
         }
+         
 
-        [HttpGet]
-        [Authorize]
-        public async Task<IActionResult> AtualizarHobby(int id)
-        {
-            var ObterIdUsuario = _userManager.GetUserId(User);
-
-            if (ObterIdUsuario == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
-            var hobby = await _hobbyService.ObterHobbyPorId(id, ObterIdUsuario);
-
-            if (hobby == null)
-            {
-                return NotFound();
-            }
-
-            return View(hobby);
-        }
     }
 }

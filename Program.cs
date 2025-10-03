@@ -30,11 +30,11 @@ builder.Services.ConfigureApplicationCookie(options =>
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IHobbyService, HobbyService>();
 
-builder.Services.AddControllersWithViews();
-
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 
 builder.Services.AddAutoMapper(typeof(Program));
+
+builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
@@ -48,6 +48,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}");
 
 app.Run();

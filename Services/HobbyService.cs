@@ -1,6 +1,7 @@
 using AutoMapper;
 using MeuCantinhoCriativo.Data;
 using MeuCantinhoCriativo.Enum;
+using MeuCantinhoCriativo.Models;
 using MeuCantinhoCriativo.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,7 +20,7 @@ namespace MeuCantinhoCriativo.Services
 
         public async Task<Resultado> AdicionarHobby(HobbyViewModel hobbyViewModel)
         {
-            var hobby = _mapper.Map<Models.Hobby>(hobbyViewModel);
+            var hobby = _mapper.Map<Hobby>(hobbyViewModel);
 
             await _context.Hobbies.AddAsync(hobby);
             
@@ -44,7 +45,7 @@ namespace MeuCantinhoCriativo.Services
                 return Resultado.NaoEncontrado;
             }
 
-            _mapper.Map(hobbyViewModel, hobby);
+            hobby = _mapper.Map(hobbyViewModel, hobby);
 
             _context.Hobbies.Update(hobby);
 
@@ -75,9 +76,9 @@ namespace MeuCantinhoCriativo.Services
 
         }
 
-        public Task<HobbyViewModel> ObterHobbyPorId(int hobbyId, string userId)
+        public async Task<HobbyViewModel> ObterHobbyPorId(int hobbyId, string userId)
         {
-            var hobby =  _context.Hobbies.AsNoTracking().FirstOrDefaultAsync(h => h.Id == hobbyId && h.UserId == userId);
+            var hobby = await  _context.Hobbies.AsNoTracking().FirstOrDefaultAsync(h => h.Id == hobbyId && h.UserId == userId);
 
             if (hobby == null)
             {
@@ -85,7 +86,7 @@ namespace MeuCantinhoCriativo.Services
             }
             else
             {
-                return _mapper.Map<Task<HobbyViewModel>>(hobby);
+                return _mapper.Map<HobbyViewModel>(hobby);
             }
         }
 

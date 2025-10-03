@@ -23,17 +23,18 @@ else
                     <td>@hobby.Nome</td>
                     <td>@hobby.descricao</td>
                     <td>
-                        <a href="/Hobby/Edit/@hobby.Id" class="btn btn-warning">Editar</a>
+                        <a asp-action="Cadastrar" asp-route-HobbyId="@hobby.Id" class="btn btn-warning">Editar</a>
+
                         @if (hobby.descricao != null)
                         {
-                            <a href="/Hobby/Details/@hobby.Id" class="btn btn-info">Detalhes</a>
+                            <a asp-action="Detalhes" asp-route-HobbyId="@hobby.Id" class="btn btn-info">Detalhes</a>
                         }
                         else
                         {
                             <span class="btn btn-secondary">Detalhes</span>
                         }
 
-                        <a href="/Hobby/Delete/@hobby.Id" class="btn btn-danger">Excluir</a>
+                        <a asp-action="Deletar" asp-route-HobbyId="@hobby.Id" class="btn btn-danger">Excluir</a>
                     </td>
                 </tr>
             }
