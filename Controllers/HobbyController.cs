@@ -34,11 +34,11 @@ namespace MeuCantinhoCriativo.Controllers
             return View(hobbies);
         }
 
-        [HttpGet("Hobby/Cadastrar/{HobbyId?}")]
+        [HttpGet]
         [Authorize]
-        public async Task<IActionResult> Cadastrar(int? hobbyId = null)
+        public async Task<IActionResult> Cadastrar(int? HobbyId = null)
         {
-            if (hobbyId.HasValue)
+            if (HobbyId.HasValue)
             {
                 var ObterIdUsuario = _userManager.GetUserId(User);
 
@@ -47,7 +47,7 @@ namespace MeuCantinhoCriativo.Controllers
                     return RedirectToAction("Login", "Account");
                 }
 
-                var hobby = await _hobbyService.ObterHobbyPorId(hobbyId.Value, ObterIdUsuario);
+                var hobby = await _hobbyService.ObterHobbyPorId(HobbyId.Value, ObterIdUsuario);
 
                 if (hobby == null)
                 {
@@ -60,7 +60,7 @@ namespace MeuCantinhoCriativo.Controllers
             return View(new HobbyViewModel());
         }
 
-        [HttpPost("Hobby/Cadastrar/{HobbyId?}")]
+        [HttpPost]
         [Authorize]
         public async Task<IActionResult> Cadastrar(HobbyViewModel hobbyViewModel)
         {
@@ -88,8 +88,6 @@ namespace MeuCantinhoCriativo.Controllers
                 }
                 else
                 {
-
-
                     var AdicionarHobby = await _hobbyService.AdicionarHobby(hobbyViewModel);
 
                     return AdicionarHobby switch
@@ -99,7 +97,6 @@ namespace MeuCantinhoCriativo.Controllers
                         Resultado.NaoEncontrado => NotFound(),
                     };
 
-
                 }
 
             }
@@ -108,11 +105,11 @@ namespace MeuCantinhoCriativo.Controllers
 
         }
 
-        [HttpGet("Hobby/Deletar/{HobbyId}")]
+        [HttpGet]
         [Authorize]
-        public async Task<IActionResult> Deletar(int HobbyId)
+        public async Task<IActionResult> Deletar(int? HobbyId)
         {
-            if (HobbyId != 0)
+            if (HobbyId.HasValue || HobbyId != 0)
             {
                 var ObterIdUsuario = _userManager.GetUserId(User);
 
@@ -121,7 +118,7 @@ namespace MeuCantinhoCriativo.Controllers
                     return RedirectToAction("Index");
                 }
 
-                var Hobby = await _hobbyService.ObterHobbyPorId(HobbyId, ObterIdUsuario);
+                var Hobby = await _hobbyService.ObterHobbyPorId(HobbyId.Value, ObterIdUsuario);
 
                 return View(Hobby);
 
@@ -130,9 +127,9 @@ namespace MeuCantinhoCriativo.Controllers
             return View("Index");
         }
 
-        [HttpPost("Hobby/Deletar/{id}")]
+        [HttpPost]
         [Authorize]
-        public async Task<IActionResult> DeletarConfirmado(int id)
+        public async Task<IActionResult> Deletar([FromForm] int id)
         {
             if (id > 0)
             {
